@@ -1,0 +1,122 @@
+    1  sudo groupadd students
+    2  sudo useradd -m -u 1234 -s /bin/bash -G students user1
+    3  stat /home/user1
+    4  id user1
+    5  getent group students
+    6  sudo passwd user1
+    7  getent passwd user1
+    8  sudo chage -m 1 -M 90 -W 7 -I 3 user1
+    9  sudo chage -l user1
+   10  history
+   11  stat /home/user1 > ~/stat.out
+   12  df -h / /home /tmp
+   13  sudo find / \( -path /proc -o -path /sys -o -path /dev \) -prune -o -type f -perm -4000 -print 2>/dev/null | tee ~/find-setuid.txt
+   14  ps -eo pid,ruid,euid,user,comm --no-headers | awk '$3==0 && $2!=0' | tee ~/process-elevated-before.txt
+   15  ps -p 1869 -o pid,ppid,ruid,euid,user,args
+   16  ps -eo pid,ruid,euid,user,comm --no-headers | awk '$3==0 && $2!=0' | tee ~/process-elevated.txt
+   17  cat ~/process-elevated.txt
+   18  ls -l /bin/bash
+   19  findmnt -no OPTIONS /home
+   20  sudo cp /bin/bash /home/user1/bash-suid
+   21  ls -l /home/user1/bash-suid
+   22  sudo ls -l /home/user1/bash-suid
+   23  sudo chown root:root /home/user1/bash-suid
+   24  sudo chmod 4755 /home/user1/bash-suid
+   25  sudo ls -l /home/user1/bash-suid
+   26  sudo ls -Z /home/user1/bash-suid
+   27  ls -Z /usr/bin/passwd
+   28  sudo -u user1 /home/user1/bash-suid -p -c 'id -u; id -ru; head -1 /etc/shadow'
+   29  sudo -u user1 id -Z
+   30  cat ~/stat.out
+   31  sudo stat /home/user1/bash-suid >> ~/stat.out
+   32  cat ~/stat.out
+   33  cat ~/getcap.out
+   34  sudo getcap /home/user1/bash-suid > ~/getcap.out
+   35  cat ~/getcap.out
+   36  sudo restorecon -v /home/user1/bash-suid
+   37  sudo -u user1 /home/user1/bash-suid -p -c 'id -u; id -ru'
+   38  sudo stat /home/user1/bash-suid
+   39  sudo cp /usr/bin/chown /home/user1/chown-cap
+   40* 
+   41  ls -l /home/user1/chown-cap
+   42  sudo ls -l /home/user1/chown-cap
+   43  sudo setcap cap_chown+ep /home/user1/chown-cap
+   44  sudo getcap /home/user1/chown-cap
+   45  sudo touch /home/user1/testfile
+   46  sudo chown root:root /home/user1/testfile
+   47  sudo -u user1 /home/user1/chown-cap user1 /home/user1/testfile
+   48  sudo ls -l /home/user1/testfile
+   49  sudo -u user1 /usr/bin/chown user1 /home/user1/testfile
+   50  sudo ls -l /home/user1/testfile
+   51  sudo touch /home/user1/testfile2
+   52  sudo chown root:root /home/user1/testfile2
+   53  sudo -u user1 /usr/bin/chown user1 /home/user1/testfile2
+   54  sudo stat /home/user1/chown-cap >> ~/stat.out
+   55  sudo getcap /home/user1/chown-cap >> ~/getcap.out
+   56  cat ~/getcap.out
+   57  sudo visudo -f /etc/sudoers.d/change-time
+   58  sudo cat /etc/sudoers.d/change-time
+   59  sudo EDITOR=nano visudo -f /etc/sudoers.d/change-time
+   60  sudo visudo -f /etc/sudoers.d/change-time
+   61  sudo ls -la /etc/sudoers.d/
+   62  sudo rm -f /etc/sudoers.d/change-time.tmp /etc/sudoers.d/.change-time.tmp.swp
+   63  ps -ef | grep -E 'vi(m)?|nano' | grep -v grep
+   64  sudo kill 4720
+   65  ps -ef | grep visudo | grep -v grep
+   66  sudo pkill -f visudo
+   67  ps -ef | grep visudo | grep -v grep
+   68  sudo kill -9 4719 4718 4708
+   69  ps -ef | grep visudo | grep -v grep
+   70  echo 'user1 ALL=(root) /usr/bin/date -s *' | sudo tee /etc/sudoers.d/change-time
+   71  sudo chmod 0440 /etc/sudoers.d/change-time
+   72  sudo visudo -c -f /etc/sudoers.d/change-time
+   73  sudo ls -l /etc/sudoers.d/change-time
+   74  sudo cat /etc/sudoers.d/change-time
+   75  sudo -u user1 sudo -l
+   76  sudo -u user1 sudo date -s "2026-10-24 19:30:00"
+   77  date
+   78  sudo cp /etc/sudoers /home/admin/sudoers
+   79  sudo cp /etc/sudoers.d/change-time /home/admin/sudoers-change-time
+   80  sudo passwd root
+   81  sudo passwd admin
+   82  sudo cp /etc/passwd /home/admin/etc-passwd
+   83  sudo cp /etc/shadow /home/admin/etc-shadow
+   84  sudo cp /etc/group /home/admin/etc-group
+   85  sudo cp /etc/sudoers /home/admin/etc-sudoers
+   86  ls -l ~/*.out ~/*.txt ~/etc-* ~/sudoers* ~/mephi-screenshot.png 2>&1
+   87  cd ~/mephi-linux-security-2026
+   88  ls -la
+   89  git remote -v
+   90  cp ~/stat.out ~/getcap.out ~/find-setuid.txt ~/process-elevated.txt ~/history.out .
+   91  history > ~/history.out
+   92  cp ~/stat.out ~/getcap.out ~/find-setuid.txt ~/process-elevated.txt ~/history.out .
+   93  cp ~/etc-passwd ~/etc-shadow ~/etc-group ~/etc-sudoers .
+   94  sudo cp ~/etc-shadow ~/etc-sudoers .
+   95  ls -l
+   96  cp ~/sudoers-change-time .
+   97  sudo cp ~/sudoers-change-time .
+   98  ls -l
+   99  cat ~/getcap.out
+  100   cp ~/sudoers-change-time .
+  101  sudo cp ~/sudoers-change-time .
+  102  ls -l
+  103  head -12 README.md
+  104  cat README.MD
+  105  cat README.md
+  106  cat README.md
+  107  git log
+  108  ls -l
+  109  { echo "=== chown-cap (раздел 4, capability) ==="; sudo getcap /home/user1/chown-cap; echo; echo "=== bash-suid (раздел 3, setuid) ==="; sudo getcap /home/user1/bash-suid; echo "(пусто — capability отсутствует, работает setuid)"; } > ~/getcap.out
+  110  cp ~/getcap.out .
+  111  history > ~/history.out
+  112  cp ~/history.out .
+  113  la -l
+  114  ls -l
+  115  head -30 ~/history.out
+  116  tail -20 ~/history.out
+  117  history | grep -n 'cat > README.md'
+  118  history -d 107
+  119  history -d 103
+  120  history | grep -c 'README.md'
+  121  history | grep -n 'README.md'
+  122  history > ~/history.out

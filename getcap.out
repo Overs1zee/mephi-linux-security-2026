@@ -1,0 +1,5 @@
+=== chown-cap (раздел 4, capability) ===
+/home/user1/chown-cap cap_chown=ep
+
+=== bash-suid (раздел 3, setuid) ===
+(пусто — capability отсутствует, работает setuid)
